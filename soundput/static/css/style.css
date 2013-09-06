@@ -1,0 +1,63 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+	background: url(../img/backss.jpg);
+	background-size:100%;
+	background-color:#000;
+	background-repeat:no-repeat;
+	font-family: Museo-700;
+}
+.column{
+	left:0;
+	right:0;
+	bottom:0;
+	top:0;
+	padding:0;
+	margin:0 auto;
+	width: 50%;	
+	position:absolute;
+}
+.top{
+	clear:both;
+	display:inline-block;
+	width:50%;
+	font-family: Museo-700;
+	position:fixed;
+	text-align:center;
+	z-index:1;
+}
+.title{
+	float:left;
+	font-size:24pt;
+    color:#FFF;
+    -webkit-background-clip: text;
+}
+
+.menu{
+	background:transparent;
+	box-shadow: 0px 0px 15px #000;
+	font-size:18pt;
+	float:right;
+	text-align: center;
+	margin-top: 20px;
+	margin-right:10px;
+	border-radius:50%;
+	width: 120px;
+	height:120px;
+	line-height:125px;
+}
+a{
+	text-decoration:none;
+	color:#000;
+}
+.main{
+	position:relative;
+	width: 100%;
+	font-family: Museo-700;
+	font-style:normal;
+	font-stretch:condensed;
+	color:#FFF;
+	font-size:38px;
+	top:245px;
+	text-shadow:0px 0px 12px #000;
+}

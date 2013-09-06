@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Soundput</title>
+<link rel="stylesheet" type="text/css" href="static\fonts\MyFontsWebfontsKit\MyFontsWebfontsKit.css">
+<link rel="stylesheet" type="text/css" href="static\css\style.css">
+</head>
+
+<body>
+<div class="column">
+	<div class="top">	
+    	<div class="title">
+    		<h1>(.Soundput.)</h1>
+    	</div>
+    
+    	<div class="menu">
+            {% if not session.logged_in %}
+                <a href="{{ url_for('login') }}">LOGIN</a>
+            {% else %}
+                <a href="{{ url_for('logout') }}">LOGOUT</a>
+            {% endif %}
+    	</div>
+	</div>
+
+	<div class="main column">
+		<div class="description">
+			<p>Soundput is a music service that lets you to access and play your music on your <i><a href="https://put.io">put.io</a></i> account anywhere in the world.</p>
+		</div>
+    </div>
+</div>
+</body>
+</html>
