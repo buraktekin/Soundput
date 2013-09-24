@@ -1,7 +1,7 @@
 # Burak Tekin
 # Istanbul Bilgi University
-#Department of Computer Science
-#Sources:
+# Department of Computer Science
+# Sources:
 #     *http://flask.pocoo.org/docs/tutorial/#tutorial)
 #     *put.io API
 #     *MongoDB
