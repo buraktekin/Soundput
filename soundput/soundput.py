@@ -6,12 +6,13 @@
 #     *put.io API
 #     *MongoDB
 #-----------------------------------------------------------------------------
+
 import json, pymongo, putio
+import requests
+
 from flask import Flask, g, render_template, redirect, request, url_for, session, flash, abort
 from pymongo import Connection
 from bson import ObjectId
-
-import requests
 
 #----------------------------------------------------------------------------------------------
 # configuration part
@@ -73,15 +74,28 @@ def putio_callback():
     else:
         user_id = db.users.insert({'token': token})
 
+    session['logged_in'] = True
     session['user_id'] = str(user_id)
-    return redirect(url_for('index'))
 
+    #------- Get files from server ------#
+    #Generate a client with token we already had.
+    client = putio.Client(g.user['token'])
+    #check extension is in suitable audio format or not and fetch files.
+    dict = client.request("/files/search/ext:mp3", method='GET')
+    files = dict['files']
+    files = [f for f in files]
+    db.user_files.insert(sorted(files))
+    return render_template('home.html', files=files)
 
-@app.route('/files')
-def show_files():
-    c = putio.Client(g.user['token'])
-    return str(c.File.list())
+#Logout action
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    return redirect('/')
 
+@app.route('/player')
+def show_player():
+    return render_template('player.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../static/assets/ico/favicon.png">
+
+    <title>Carousel Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../static/dist/css/bootstrap.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../static/assets/js/html5shiv.js"></script>
+      <script src="../static/assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom styles for this template -->
+    <link href="../static/stylesheets/carousel.css" rel="stylesheet">
+  </head>
+  
+	<!-- NAVBAR
+	================================================== -->
+  <body>
+
+  <div class="navbar-wrapper">
+      <div class="container">
+      	  <div class="btn-group">
+              <a href="#" class="btn btn-inverse"><i class="icon-white icon-fast-backward"></i></a>
+              <a href="#" class="btn btn-inverse"><i class="icon-white icon-backward"></i></a>
+              <a href="#" class="btn btn-inverse"><i class="icon-white icon-stop"></i></a>
+              <a href="#" class="btn btn-inverse"><i class="icon-white icon-play"></i></a>
+              <a href="#" class="btn btn-inverse"><i class="icon-white icon-pause"></i></a>
+              <a href="#" class="btn btn-inverse"><i class="icon-white icon-forward"></i></a>
+              <a href="#" class="btn btn-inverse"><i class="icon-white icon-fast-forward"></i></a>
+          </div>
+          <div class="navbar navbar-inverse navbar-static-top">
+              <div class="container">
+
+                  <div class="navbar-header">
+                      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                      </button>
+
+                      <a class="navbar-brand" href="#">(.Soundput.)</a>
+                  </div>
+
+
+                  <div class="navbar-collapse collapse pull-right">
+                      <ul class="nav navbar-nav pull-right">
+                          <li class="active"><a href="#">Home</a></li>
+                          <li><a href="#about">About</a></li>
+                          <li><a href="#contact">Contact</a></li>
+                          <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+
+                              <ul class="dropdown-menu">
+                                  <li><a href="#">Action</a></li>
+                                  <li><a href="#"><i class="icon-off"></i> Logout</a></li>
+                              </ul>
+
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+	<!-- NAVBAR END
+	=================================================== -->
+    
+    <!-- List audio files
+    =================================================== -->
+    <div class="container">
+        <div class="row-fluid">
+            <ul>
+                <li>
+                    <div class="span4 pull-left">
+                        <table class="table">
+
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>File Name</th>
+                                <th style="width: 36px;"></th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for i in range(42) %}
+                                 <tr>
+                                    <td>{{ i+1 }}.</td>
+                                    <td><a href="http://put.io/v2/files/{{ files[i]['id'] }}/stream.mp3">{{ files[i]['name'] }}</a></td>
+                                 </tr>
+                            {% endfor %}
+                            </tbody>
+
+                        </table>
+                    </div>
+                </li>
+                <li>
+                    <div class="span4 pull-right">
+                        <iframe frameborder="0" scrolling="no" width="100%" height="800px" src="{{ url_for('show_player') }}">
+                    </div>
+                </li>
+
+            </ul>
+        </div> <!-- End Row -->
+    </div>
+  </div><!-- End Container -->
+  
+  <!-- End of listing
+    =================================================== -->
+    
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+	<script src="../static/assets/js/jquery.js"></script>
+	<script src="../static/dist/js/bootstrap.min.js"></script>
+	<script src="../static/assets/js/holder.js"></script>
+
+</body>
+</html>
