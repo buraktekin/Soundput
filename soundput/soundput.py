@@ -37,6 +37,7 @@ db = connection.soundput
 #------------------------------------FUNCTIONS--------------------------------------------------
 
 
+#Check user session for each request.
 @app.before_request
 def set_user():
     g.user = None
@@ -45,30 +46,33 @@ def set_user():
         g.user = db.users.find_one({'_id': oid})
 
 
+#Welcome Page.
 @app.route('/')
 def index():
     return render_template('index.html')
 
 
-# Action when 'LOGIN' button click
-# Redirect the user to callback url to login it's put.io account
+# Action when 'LOGIN' button click.
+# Redirect the users to callback url to login their put.io account.
 @app.route('/login')
 def login():
     return redirect(AUTH_URL)
 
 
+#Callback action - redirect users to their personal home pages after they login.
 @app.route('/callback')
 def putio_callback():
     code = request.args.get('code')
     if not code:
-        abort(401)
+        abort(401)#Authorization problem occured!
 
+    #generate url to get||access token.
     url = TOKEN_URL % (CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, code)
     r = requests.get(url)
     assert r.status_code == 200
-    token = json.loads(r.content)['access_token']
+    token = json.loads(r.content)['access_token']#held token if exists...
 
-    user = db.users.find_one({'token': token})
+    user = db.users.find_one({'token': token})#check user's token exist or not in DB
     if user:
         user_id = user['_id']
     else:
@@ -83,7 +87,8 @@ def putio_callback():
     #check extension is in suitable audio format or not and fetch files.
     dict = client.request("/files/search/ext:mp3", method='GET')
     files = dict['files']
-    files = [f for f in files]
+    files = [file for file in files]
+    #Insert Files into DB.
     db.user_files.insert(sorted(files))
     return render_template('home.html', files=files)
 
