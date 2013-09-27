@@ -1,42 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="shortcut icon" href="../static/assets/ico/favicon.png">
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="shortcut icon" href="../static/assets/ico/favicon.png">
 
-    <title>Carousel Template for Bootstrap</title>
+      <link href="../static/JPlayer/blue.monday/jplayer.blue.monday.css" rel="stylesheet" type="text/css" />
+      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+      <script type="text/javascript" src="../static/JPlayer/jquery.jplayer.min.js"></script>
+      <script type="text/javascript" src="../static/JPlayer/add-on/jplayer.playlist.min.js"></script>
+      <script type="text/javascript" src="../static/js/player.js"></script>
 
-    <!-- Bootstrap core CSS -->
-    <link href="../static/dist/css/bootstrap.css" rel="stylesheet">
+      <title>(.Sounput.)-Home</title>
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
+      <!-- Bootstrap core CSS -->
+      <link href="../static/dist/css/bootstrap.css" rel="stylesheet">
+
+      <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+      <!--[if lt IE 9]>
       <script src="../static/assets/js/html5shiv.js"></script>
       <script src="../static/assets/js/respond.min.js"></script>
-    <![endif]-->
+      <![endif]-->
 
-    <!-- Custom styles for this template -->
-    <link href="../static/stylesheets/carousel.css" rel="stylesheet">
+      <!-- Custom styles for this template -->
+      <link href="../static/stylesheets/carousel.css" rel="stylesheet">
+
+      <script>
+          function insert_into_playlist(title, link){
+              myplaylist.add({
+                  title:title,
+                  artist:"Hello neco",
+                  mp3:"https://put.io/v2/files/"+link+"/stream.mp3"
+              });
+          };
+      </script>
   </head>
-  
-	<!-- NAVBAR
-	================================================== -->
-  <body>
+
+  <!-- NAVBAR
+  ================================================== -->
+  <body style="background:url(../static/images/equ.jpg);background-repeat: no-repeat; background-size: cover">
 
   <div class="navbar-wrapper">
       <div class="container">
-      	  <div class="btn-group">
-              <a href="#" class="btn btn-inverse"><i class="icon-white icon-fast-backward"></i></a>
-              <a href="#" class="btn btn-inverse"><i class="icon-white icon-backward"></i></a>
-              <a href="#" class="btn btn-inverse"><i class="icon-white icon-stop"></i></a>
-              <a href="#" class="btn btn-inverse"><i class="icon-white icon-play"></i></a>
-              <a href="#" class="btn btn-inverse"><i class="icon-white icon-pause"></i></a>
-              <a href="#" class="btn btn-inverse"><i class="icon-white icon-forward"></i></a>
-              <a href="#" class="btn btn-inverse"><i class="icon-white icon-fast-forward"></i></a>
-          </div>
           <div class="navbar navbar-inverse navbar-static-top">
               <div class="container">
 
@@ -53,18 +60,11 @@
 
                   <div class="navbar-collapse collapse pull-right">
                       <ul class="nav navbar-nav pull-right">
+                          <li><a>Hi, {{ account['username'] }}</a></li>
                           <li class="active"><a href="#">Home</a></li>
                           <li><a href="#about">About</a></li>
                           <li><a href="#contact">Contact</a></li>
-                          <li class="dropdown">
-                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-
-                              <ul class="dropdown-menu">
-                                  <li><a href="#">Action</a></li>
-                                  <li><a href="#"><i class="icon-off"></i> Logout</a></li>
-                              </ul>
-
-                          </li>
+                          <li><a href="{{ url_for('logout') }}">Logout</a></li>
                       </ul>
                   </div>
               </div>
@@ -74,42 +74,162 @@
 
 	<!-- NAVBAR END
 	=================================================== -->
-    
-    <!-- List audio files
+
+    <!-- Main structure JPlayer and audio files
     =================================================== -->
     <div class="container">
         <div class="row-fluid">
+
+            <!-- FILE LIST CONTAINER
+            =================================================== -->
             <ul>
                 <li>
                     <div class="span4 pull-left">
                         <table class="table">
-
                             <thead>
                             <tr>
                                 <th>#</th>
                                 <th>File Name</th>
-                                <th style="width: 36px;"></th>
                             </tr>
                             </thead>
 
                             <tbody>
-                            {% for i in range(42) %}
-                                 <tr>
-                                    <td>{{ i+1 }}.</td>
-                                    <td><a href="http://put.io/v2/files/{{ files[i]['id'] }}/stream.mp3">{{ files[i]['name'] }}</a></td>
-                                 </tr>
+                            {% for i in range(length) %}
+                                <tr>
+                                    <td>{{ i + 1 }}.</td>
+                                    <td>
+                                        <span>{{ files[i]['name'] }}
+                                        <button style="float: right" onclick= "insert_into_playlist('{{ files[i]['name'] }}', '{{ files[i]['id'] }}')">
+                                            +
+                                        </button>
+                                        </span>
+                                    </td>
+                                </tr>
+
                             {% endfor %}
+
                             </tbody>
 
                         </table>
                     </div>
                 </li>
+                <!-- End of File List Container -->
+
+
+                <!-- JPlayer Container
+                =================================================== -->
                 <li>
                     <div class="span4 pull-right">
-                        <iframe frameborder="0" scrolling="no" width="100%" height="800px" src="{{ url_for('show_player') }}">
+                        <div id="jp_container_N" class="jp-video jp-video-270p">
+                            <div class="jp-type-playlist">
+
+
+                                <div id="jquery_jplayer_N" class="jp-jplayer"></div>
+                                <div class="jp-gui">
+
+
+                                    <div class="jp-interface">
+                                        <div class="jp-progress">
+                                            <div class="jp-seek-bar">
+                                                <div class="jp-play-bar"></div>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- AUDIO TIME SECTION
+                                        =================================================== -->
+                                        <div class="jp-current-time"></div>
+                                        <div class="jp-duration"></div>
+
+
+                                        <!-- JPLAYER AUDIO CONTROL UI
+                                        =================================================== -->
+                                        <div class="jp-controls-holder">
+
+                                            <ul class="jp-controls">
+                                                <li><a href="javascript:;" class="jp-previous" tabindex="1">previous</a></li>
+                                                <li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
+                                                <li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
+                                                <li><a href="javascript:;" class="jp-next" tabindex="1">next</a></li>
+                                                <li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>
+                                                <li><a href="javascript:;" class="jp-mute" tabindex="1" title="mute">mute</a></li>
+                                                <li><a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
+                                                <li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
+                                            </ul>
+
+
+                                            <!-- VOLUME CONTROLLERS
+                                            =================================================== -->
+                                            <div class="jp-volume-bar">
+                                                <div class="jp-volume-bar-value"></div>
+                                            </div>
+
+
+                                            <!-- TOGGLE CONTROLLERS
+                                            =================================================== -->
+                                            <ul class="jp-toggles">
+                                                <li><a href="javascript:;" class="jp-full-screen" tabindex="1" title="full screen">full screen</a></li>
+                                                <li><a href="javascript:;" class="jp-restore-screen" tabindex="1" title="restore screen">restore screen</a></li>
+                                                <li><a href="javascript:;" class="jp-shuffle" tabindex="1" title="shuffle">shuffle</a></li>
+                                                <li><a href="javascript:;" class="jp-shuffle-off" tabindex="1" title="shuffle off">shuffle off</a></li>
+                                                <li><a href="javascript:;" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
+                                                <li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
+                                            </ul>
+
+                                        </div>
+                                        <!-- End of controls holder -->
+
+                                        <div class="jp-title">
+                                            <ul>
+                                                <li></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End of JPlayer GUI -->
+
+
+                                <!-- PLAYLIST
+                                =================================================== -->
+                                <div id="jp-playlist" class="jp-playlist">
+                                    <!-- Get list -->
+                                    <script>
+                                        var myplaylist =  new jPlayerPlaylist({
+                                            jPlayer: "#jquery_jplayer_N",
+                                            cssSelectorAncestor: "#jp_container_N"
+                                        }, [],
+                                                {
+                                            playlistOptions: {
+                                                shuffle: true,
+                                                enableRemoveControls: true
+                                            },
+                                            swfPath: "js",
+                                            supplied: "mp3",
+                                            smoothPlayBar: true,
+                                            keyEnabled: true,
+                                            audioFullScreen: true
+                                        });
+                                    </script>
+
+                                    <ul>
+                                        <li></li>
+                                    </ul>
+
+                                </div>
+
+
+                                <!-- ON ERROR
+                                =================================================== -->
+                                <div class="jp-no-solution">
+                                    <span>Update Required</span>
+                                    To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+                                </div>
+
+
+                            </div> <!-- End of playlist container -->
+                        </div> <!-- End of JPlayer container -->
                     </div>
                 </li>
-
             </ul>
         </div> <!-- End Row -->
     </div>

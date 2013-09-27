@@ -63,12 +63,18 @@ def putio_callback():
     if not code:
         abort(401)
 
+    #generate url to get/access token.
     url = TOKEN_URL % (CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, code)
+
     r = requests.get(url)
     assert r.status_code == 200
+
+    #held token if exists...
     token = json.loads(r.content)['access_token']
 
+    #check user's token exist or not in DB
     user = db.users.find_one({'token': token})
+
     if user:
         user_id = user['_id']
     else:
@@ -78,14 +84,27 @@ def putio_callback():
     session['user_id'] = str(user_id)
 
     #------- Get files from server ------#
+
     #Generate a client with token we already had.
-    client = putio.Client(g.user['token'])
+    client = putio.Client(token)
+
+    #get user information.
+    account_info = client.request("/account/info", method='GET')
+    account = account_info['info']
+
+
     #check extension is in suitable audio format or not and fetch files.
+
     dict = client.request("/files/search/ext:mp3", method='GET')
     files = dict['files']
-    files = [f for f in files]
+    files = [file for file in files]
+    #get number of files.
+    length = len(files)
+
+    #Insert Files into DB.
     db.user_files.insert(sorted(files))
-    return render_template('home.html', files=files)
+    return render_template('home.html', files=files, length=length, account=account)
+
 
 #Logout action
 @app.route('/logout')
@@ -93,9 +112,6 @@ def logout():
     session.pop('logged_in', None)
     return redirect('/')
 
-@app.route('/player')
-def show_player():
-    return render_template('player.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
