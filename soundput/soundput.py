@@ -1,7 +1,7 @@
 # Burak Tekin
 # Istanbul Bilgi University
-# Department of Computer Science
-# Sources:
+#Department of Computer Science
+#Sources:
 #     *http://flask.pocoo.org/docs/tutorial/#tutorial)
 #     *put.io API
 #     *MongoDB
@@ -37,7 +37,6 @@ db = connection.soundput
 #------------------------------------FUNCTIONS--------------------------------------------------
 
 
-#Check user session for each request.
 @app.before_request
 def set_user():
     g.user = None
@@ -46,36 +45,29 @@ def set_user():
         g.user = db.users.find_one({'_id': oid})
 
 
-#Welcome Page.
 @app.route('/')
 def index():
     return render_template('index.html')
 
 
-# Action when 'LOGIN' button click.
-# Redirect the users to callback url to login their put.io account.
+# Action when 'LOGIN' button click
+# Redirect the user to callback url to login it's put.io account
 @app.route('/login')
 def login():
     return redirect(AUTH_URL)
 
 
-#Callback action - redirect users to their personal home pages after they login.
 @app.route('/callback')
 def putio_callback():
     code = request.args.get('code')
     if not code:
-        abort(401)#Authorization problem occured!
+        abort(401)
 
-<<<<<<< HEAD
     #generate url to get/access token.
-=======
-    #generate url to get||access token.
->>>>>>> f688774064160de3fa8cc3af12c876b82ddead6e
     url = TOKEN_URL % (CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, code)
 
     r = requests.get(url)
     assert r.status_code == 200
-<<<<<<< HEAD
 
     #held token if exists...
     token = json.loads(r.content)['access_token']
@@ -83,11 +75,6 @@ def putio_callback():
     #check user's token exist or not in DB
     user = db.users.find_one({'token': token})
 
-=======
-    token = json.loads(r.content)['access_token']#held token if exists...
-
-    user = db.users.find_one({'token': token})#check user's token exist or not in DB
->>>>>>> f688774064160de3fa8cc3af12c876b82ddead6e
     if user:
         user_id = user['_id']
     else:
@@ -111,12 +98,9 @@ def putio_callback():
     dict = client.request("/files/search/ext:mp3", method='GET')
     files = dict['files']
     files = [file for file in files]
-<<<<<<< HEAD
     #get number of files.
     length = len(files)
 
-=======
->>>>>>> f688774064160de3fa8cc3af12c876b82ddead6e
     #Insert Files into DB.
     db.user_files.insert(sorted(files))
     return render_template('home.html', files=files, length=length, account=account)
